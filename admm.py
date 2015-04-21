@@ -1,3 +1,4 @@
+#Drew A. Clinkenbeard
 import sys
 import random
 import time
@@ -8,7 +9,7 @@ import math
 
 sys.setrecursionlimit(100000)
 class mm():
-	
+
 	def __init__(self, y=15,x=15, debug=True):
 		maze = {}
 		self.maxY = y-1
@@ -24,7 +25,7 @@ class mm():
 		# Setup Player
 		self.setScore(0)
 		player =	u"\U0001f355"
-		
+
 		# Setup Screen
 		stdscr = curses.initscr()
 		curses.savetty() #make sure we can put the screen back the way we found it
@@ -67,7 +68,7 @@ class mm():
 		# charPos = {'y':0,'x':0}
 		while moveTest:
 			move = stdscr.getch()
-			if move == 113 : 
+			if move == 113 :
 				moveTest = False
 			elif move == curses.KEY_RIGHT:
 				if self.maze[charPos[0]][charPos[1]+1]['wall'] == False :
@@ -80,7 +81,7 @@ class mm():
 					charPos[0] -= 1
 			elif move == curses.KEY_DOWN:
 				if self.maze[charPos[0]+1][charPos[1]]['wall'] == False :
-					charPos[0] += 1 
+					charPos[0] += 1
 			stdscr.clear()
 
 			for cols in self.maze:
@@ -132,7 +133,7 @@ class mm():
 		return neighbors
 
 	def __generate_maze__(self,y,x):
-		
+
 		self.maze[y][x]['wall']= False
 		self.maze[y][x]['visited'] = True
 		self.visited -= 1
@@ -143,7 +144,7 @@ class mm():
 		while neighbors:
 			rand_neighbor = random.choice(neighbors.keys())
 			# print rand_neighbor
-			
+
 			ny = neighbors[rand_neighbor]['y']
 			nx = neighbors[rand_neighbor]['x']
 
@@ -163,7 +164,7 @@ class mm():
 					self.maze[y][nx+1]['visited'] = True
 					self.maze[y][nx+1]['wall'] = False
 			del neighbors[rand_neighbor]
-			
+
 			if self.visited > 0:
 				self.__generate_maze__(ny,nx)
 
