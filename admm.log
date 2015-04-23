@@ -1,0 +1,29 @@
+ 
+[23.Apr.2015 12:11:13] KeyError: [107]
+
+**stats**
+minY 0 maxY 25
+minX 0 maxX 107len(self.maze) 25 len(self.maze[self.minY]) 107
+**stats**
+
+ ** report **
+[23.Apr.2015 12:11:30] KeyError: [107]
+
+**stats**
+minY 0 maxY 25
+minX 0 maxX 107len(self.maze) 25 len(self.maze[self.minY]) 107
+**stats**
+
+ ** report **
+{"nx": 107, "ny": 12, "report": "callings self.maze with ny and nx"}
+ ** report **
+[23.Apr.2015 12:12:25] KeyError: [25]
+
+**stats**
+minY 0 maxY 25
+minX 0 maxX 107len(self.maze) 25 len(self.maze[self.minY]) 107
+**stats**
+
+ ** report **
+{"nx": 23, "ny": 25, "report": "callings self.maze with ny and nx"}
+ ** report **

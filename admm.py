@@ -28,11 +28,16 @@ import curses
 import locale
 import random
 import math
+import json
+from time import localtime, strftime
 
 sys.setrecursionlimit(100000)
 class mm():
 
 	def __init__(self, y=15,x=15, debug=True):
+		if debug:
+			self.log =  open("admm.log",'a+')
+
 		maze = {}
 		self.maxY = y-1
 		self.maxX = x-1
@@ -127,11 +132,6 @@ class mm():
 				if self.maze[charPos[0]+1][charPos[1]]['wall'] == False :
 					charPos[0] += 1
 			
-			
-
-			
-			
-			
 
 		# end main while
 
@@ -140,6 +140,9 @@ class mm():
 		##put it all back
 		curses.resetty()
 		curses.endwin()
+
+		if debug:
+			self.log.close()
 
 	def __get_start__(self):
 		self.startY = random.choice(self.maze.keys())
@@ -170,7 +173,7 @@ class mm():
 				neighbors['NW'] = {'y':y-2,'x':x-2}
 
 		# check east and south east
-		if (x+2) <= self.maxX:
+		if (x+2) <= self.maxX-1:
 			neighbors['E'] = {'y':y,'x':x+2}
 			if diagonals and (y+2) <= self.maxY:
 				neighbors['SE'] = {'y':y+2,'x':x+2} 
@@ -182,7 +185,7 @@ class mm():
 				neighbors['NW'] = {'y':y-2,'x':x-2}
 
 		# check south cell and south west cell
-		if (y+2) <= self.maxY:
+		if (y+2) <= self.maxY-1:
 			neighbors['S'] = {'y':y+2,'x':x}
 			# check southwest cell
 			if diagonals and x+2 <= self.maxX:
@@ -217,9 +220,20 @@ class mm():
 			rand_neighbor = random.choice(neighbors.keys())
 			
 
+			try :
+				ny = neighbors[rand_neighbor]['y']
+				nx = neighbors[rand_neighbor]['x']
+			except KeyError as e:
+				self.__err__(e,{'x':x,'y':y,'ny':ny,'nx':nx,'report':"getting neighbors of x and y"})
 
-			ny = neighbors[rand_neighbor]['y']
-			nx = neighbors[rand_neighbor]['x']
+			try :
+				if self.maze[ny][nx]['visited'] or not self.maze[ny][nx]['visited']:
+					pass
+			except KeyError as e:
+				report = { 'ny':ny,'nx':nx, 'report':'callings self.maze with ny and nx'}
+				self.__err__(e,report)				
+
+
 			# try catch and throw to file.
 
 			if not self.maze[ny][nx]['visited']:
@@ -247,6 +261,23 @@ class mm():
 
 	def setScore(self, score):
 		self.score = score
+
+	def __err__(self,e,values):
+		stats  = "minY %d maxY %d\n" %(self.minY, self.maxY)
+		stats += "minX %d maxX %d\n" %(self.minX, self.maxX)
+		stats += "len(self.maze) %d len(self.maze[self.minY]) %d" %(len(self.maze) , len(self.maze[self.minY]))
+
+		report = strftime("[%d.%b.%Y %H:%M:%S] ",localtime())
+		report += 'KeyError: ['
+		report += str(e)
+		report += ']\n'
+		self.log.write(report)
+		self.log.write("\n**stats**\n")
+		self.log.write(stats)
+		self.log.write("\n**stats**\n")
+		self.log.write("\n ** report **\n")
+		json.dump(values,self.log)
+		self.log.write("\n ** report **\n")
 # maze = maze_maker()
 
 # print maze.maze
