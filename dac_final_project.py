@@ -65,10 +65,11 @@ class ist338_the_game():
 
 		self.__get_start__()
 		self.__generate_maze__(self.startY,self.startX)
-
+		stdscr.clear()
+		stdscr.refresh()
 		# print self.maze
 
-		item =	u"\U0001f355"
+		
 		# item = "0"
 		# for y in range(maxY):
 		# 	for x in range(maxX):
@@ -92,7 +93,7 @@ class ist338_the_game():
 			elif move == curses.KEY_DOWN:
 				charPos['y'] += 1 
 			stdscr.clear()
-			stdscr.addstr(charPos['y'],charPos['x'],item.encode("utf-8"))
+			stdscr.addstr(charPos['y'],charPos['x']-1,item.encode("utf-8"))
 			stdscr.refresh()
 
 
@@ -127,7 +128,7 @@ class ist338_the_game():
 					maze += '#'
 				else:
 					# print ' ',
-					maze += ' '
+					maze += '_'
 			# print '\n'
 			maze += '\n'
 
